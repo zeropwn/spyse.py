@@ -44,3 +44,49 @@ from pprint import pprint
 s = spyse()
 pprint(s.domains_on_ip("172.217.1.0/24", param="cidr"))
 ```
+
+## Available Methods
+
+All of the methods listed on https://api-doc.spyse.com/
+
+```python
+	API_METHODS = {
+		"DNS_PTR": "/dns-ptr",
+		"DNS_SOA": "/dns-soa",
+		"DNS_MX": "/dns-mx",
+		"DNS_AAAA": "/dns-aaaa",
+		"DNS_NS": "/dns-ns",
+		"DNS_A": "/dns-a",
+		"DNS_TXT": "/dns-txt",
+		"domains_with_same_ns": "/domains-with-same-ns",
+		"domains_using_as_mx": "/domains-using-as-mx",
+		"domains_on_ip": "/domains-on-ip",
+		"domains_with_same_mx": "/domains-with-same-mx",
+		"domains_using_as_ns": "/domains-using-as-ns",
+		"download_dns_aaaa": "/download-dns-aaaa",
+		"download_dns_soa": "/download-dns-soa",
+		"download_dns_ns": "/download-dns-ns",
+		"download_dns_ptr": "/download-ns-ptr",
+		"download_dns_mx": "/download-dns-mx",
+		"download_dns_a": "/download-dns-a",
+		"download_dns_txt": "/download-dns-txt",
+		"download_domains_with_same_mx": "/download-domains-with-same-mx",
+		"download_domains_on_ip": "/download-domains-on-ip",
+		"download_domains_with_same_ns": "/download-domains-with-same-ns",
+		"download_domains_using_as_ns": "/download-domains-using-as-ns",
+		"download_domains_using_as_mx": "/download-domains-using-as-mx",
+		"ip_port_lookup_aggregate": "/ip-port-lookup-aggregate",
+		"ip_port_lookup": "/ip-port-lookup",
+		"ssl_certificates": "/ssl-certificates",
+		"ssl_certificate_raw": "/ssl-certificate-raw",
+		"ssl_certificates_aggregate": "ssl-certificates-aggregate",
+		"ssl_certificate": "/ssl-certificate",
+		"ssl_certificate_public_key": "/ssl-certificate-public-key",
+		"ssl_certificate_json": "/ssl-certificate-json",
+		"subdomains": "/subdomains",
+		"subdomains_aggregate": "/subdomains-aggregate",
+		"domains_starts_with": "/domains-starts-with",
+		"domains_starts_with_aggregate": "/domains-starts-with-aggregate"
+	}
+  ```
+
