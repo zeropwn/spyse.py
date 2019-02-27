@@ -7,9 +7,11 @@ Python API wrapper for the tools hosted on spyse.com.
 \- spyse.com
 
 Supports the following APIs:
-- DNStable (dnstable.com)
-- FindSubdomains (findsubdomains.com)
-- CertDB (certdb.com)
-- ASlookup (aslookup.com)
-- PortMap (portmap.com)
-- DomainsDB (domainsdb.org)
+- [DNStable](dnstable.com)
+- [FindSubdomains](https://findsubdomains.com)
+- [CertDB](https://certdb.com)
+- [ASlookup] (https://aslookup.com)
+- [PortMap](https://portmap.com)
+- [DomainsDB](https://domainsdb.org)
+
+
