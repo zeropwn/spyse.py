@@ -10,7 +10,7 @@ Supports the following APIs:
 - [DNStable](dnstable.com)
 - [FindSubdomains](https://findsubdomains.com)
 - [CertDB](https://certdb.com)
-- [ASlookup] (https://aslookup.com)
+- [ASlookup](https://aslookup.com)
 - [PortMap](https://portmap.com)
 - [DomainsDB](https://domainsdb.org)
 
