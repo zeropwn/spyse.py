@@ -45,6 +45,27 @@ s = spyse()
 pprint(s.domains_on_ip("172.217.1.0/24", param="cidr"))
 ```
 
+#### Fetch subdomains
+```python
+from spyse import spyse
+
+TARGET = "TARGET_HOST_HERE"
+
+s = spyse()
+data = s.subdomains_aggregate(TARGET, param="domain")['cidr']
+keys = data.keys()
+for key in keys:
+	domains = data[key]['results']
+	for d in domains:
+		domain = d['data']['domains']
+		if len(domain) > 1:
+			for i in domain:
+				print(i)
+		else:
+			print(domain[0])
+```
+
+
 ## Available Methods
 
 All of the methods listed on https://api-doc.spyse.com/
