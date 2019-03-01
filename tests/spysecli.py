@@ -5,6 +5,9 @@
 # ./spysecli.py -target hackerone.com -param domain --subdomains-aggregate
 # ./spysecli.py -target "52.14.144.171" -param ip --domains-on-ip
 # ./spysecli.py -target "52.14.144.0/24" -param cidr --dns-a
+#
+# you can easily pipe the subdomains-aggregate results to aquatone 
+# try it out :ppp
 
 from pprint import pprint
 from spyse import spyse
