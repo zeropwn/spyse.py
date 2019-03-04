@@ -5,6 +5,19 @@ from spyse import spyse
 import argparse
 import sys
 
+print("""
+	  ██████  ██▓███ ▓██   ██▓  ██████ ▓█████ 
+	▒██    ▒ ▓██░  ██▒▒██  ██▒▒██    ▒ ▓█   ▀ 
+	░ ▓██▄   ▓██░ ██▓▒ ▒██ ██░░ ▓██▄   ▒███   
+	  ▒   ██▒▒██▄█▓▒ ▒ ░ ▐██▓░  ▒   ██▒▒▓█  ▄ 
+	▒██████▒▒▒██▒ ░  ░ ░ ██▒▓░▒██████▒▒░▒████▒
+	▒ ▒▓▒ ▒ ░▒▓▒░ ░  ░  ██▒▒▒ ▒ ▒▓▒ ▒ ░░░ ▒░ ░
+	░ ░▒  ░ ░░▒ ░     ▓██ ░▒░ ░ ░▒  ░ ░ ░ ░  ░
+	░  ░  ░  ░░       ▒ ▒ ░░  ░  ░  ░     ░   
+	      ░           ░ ░           ░     ░  ░
+	                  ░ ░                     
+""")
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-target', help="target")
 parser.add_argument('-param', help="parameter to use (ip, domain, cidr, url, hash)")
@@ -32,6 +45,7 @@ parser.add_argument('--download-dns-mx', help="download dns mx records", action=
 parser.add_argument('--download-dns-a', help="download dns a records", action="store_true")
 parser.add_argument('--download-dns-txt', help="download dns txt records", action="store_true")
 parser.add_argument('--download-dns-all', help="download all dns records", action="store_true")
+parser.add_argument('--ssl-certificates', help="show ssl certificates associated with a target", action="store_true")
 parser.add_argument('--subdomains-aggregate', help="show subdomains aggregate", action="store_true")
 args = parser.parse_args()
 
@@ -212,6 +226,27 @@ def get_download_dns_a(target, param, page):
 def get_download_dns_txt(target, param, page):
 	return s.download_dns_txt(target, param, page)
 
+def get_ssl_certificates(target, param='q', raw=False):
+	if args.raw:
+		return s.ssl_certificates(target)
+	else:
+		certs = s.ssl_certificates(target)
+		retval = ""
+		for cert in certs:
+			retval += '---------------------------------------------------\n'
+			domains = cert['domains']
+			ips	= cert['ips']
+			for domain in domains:
+				retval += '[+] SSL cert assigned to domain {}\n'.format(domain['domain'])
+			retval += '[*] Valid from: {}\n'.format(cert['valid_from'])
+			retval += '[*] Valid to: {}\n'.format(cert['valid_to'])
+			retval += '[*] Hash: {}\n\n'.format(cert['hash'])
+			for ip in ips:
+				retval += '-> Associated with IP {}\n'.format(ip['ip'])
+			retval += '---------------------------------------------------\n\n'
+		return retval
+	return False
+
 def get_subdomains_aggregate(target, param, page, raw=False):
 	if args.raw:
 		return s.subdomains_aggregate(target, param=param, page=page)
@@ -334,3 +369,6 @@ if args.target and args.param:
 
 	if args.download_dns_all:
 		print(get_download_dns_all(args.target, args.param, page))
+
+	if args.ssl_certificates:
+		print(get_ssl_certificates(args.target))
