@@ -2,6 +2,7 @@
 ![Build Status](https://travis-ci.org/zeropwn/spyse.py.svg?branch=master)
 [![Python 3.6](https://img.shields.io/badge/Python-3.6-blue.svg)](https://www.python.org/download/releases/3.0/)
 [![GitHub license](https://img.shields.io/github/license/zeropwn/spyse.py.svg)](https://github.com/zeropwn/spyse.py/blob/master/LICENSE)
+![](https://i.imgur.com/fX2NncJ.jpg)
 
 Python API wrapper for the tools hosted on spyse.com.
 
@@ -20,7 +21,34 @@ Supports the following APIs:
 
 #### NOTE: This API is currently under active development.
 
-## Examples
+## Using the client
+
+#### Required Arguments
+* -target
+* -param
+
+#### Optional Arguments
+* -page
+* -apikey
+* --raw
+
+#### The deal with parameters
+
+Spyse allows you to search their database for IPs, IP ranges, domain names, URLs, etc. The parameter argument is meant to specify the type of your input.
+
+
+#### Example usages
+
+```bash
+spyse -target xbox.com -param domain --subdomains-aggregate
+spyse -target 127.0.0.1/24 -param cidr --domains-on-ip
+spyse -target hotmail.com -param url --ssl-certificates
+spyse -target google.com -param domain --dns-all
+spyse -target xbox.com -param domain -apikey <APIKEY> -page 2 --ssl-certificates --raw
+```
+
+
+## Using the library
 
 #### Without API Key
 ```python
