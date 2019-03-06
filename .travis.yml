@@ -7,3 +7,4 @@ install:
   - python3 setup.py install
 
 script:
+  - echo 1
