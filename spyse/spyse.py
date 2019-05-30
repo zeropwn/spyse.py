@@ -440,9 +440,11 @@ class spyse:
 		return r.json()
 
 	# Provides list of SSL certificates.
-	def ssl_certificates(self, target, param='domain', page=1):
+	def ssl_certificates(self, target, param='url', page=1):
 		if param not in self.API_TARGET_PARAMS:
 			return "Invalid parameter."
+		if param == 'domain':
+			param = 'url'
 		r = requests.get("{}/{}?api_token={}&{}={}&page={}".format(
 			self.API_URL,
 			self.API_METHODS['ssl_certificates'],
@@ -454,9 +456,11 @@ class spyse:
 		return r.json()
 
 	# Returns raw ssl certificate.
-	def ssl_certificate_raw(self, target, param='domain', page=1):
+	def ssl_certificate_raw(self, target, param='url', page=1):
 		if param not in self.API_TARGET_PARAMS:
 			return "Invalid parameter."
+		if param == 'domain':
+			param = 'url'
 		r = requests.get("{}/{}?api_token={}&{}={}&page={}".format(
 			self.API_URL,
 			self.API_METHODS['ssl_certificate_raw'],
