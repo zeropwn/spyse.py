@@ -47,7 +47,7 @@ Spyse allows you to search their database for IPs, IP ranges, domain names, URLs
 #### Example usages
 
 ```bash
-spyse -target xbox.com -param domain --subdomains-aggregate
+spyse -target xbox.com -param domain --subdomains
 spyse -target 127.0.0.1/24 -param cidr --domains-on-ip
 spyse -target hotmail.com -param url --ssl-certificates
 spyse -target google.com -param domain --dns-all
