@@ -19,7 +19,7 @@ print("""
 
 parser = argparse.ArgumentParser(
 	description="Client for Spyse.com",
-	epilog="Usage: spyse -target <TARGET> -param <PARAM> --subdomains-aggregate")
+	epilog="Usage: spyse -target <TARGET> -param <PARAM> --subdomains")
 parser.add_argument('-target', help="target")
 parser.add_argument('-param', help="parameter to use (ip, domain, cidr, url, hash)")
 parser.add_argument('-page', help="page")
@@ -47,7 +47,7 @@ parser.add_argument('--download-dns-a', help="download dns a records", action="s
 parser.add_argument('--download-dns-txt', help="download dns txt records", action="store_true")
 parser.add_argument('--download-dns-all', help="download all dns records", action="store_true")
 parser.add_argument('--ssl-certificates', help="show ssl certificates associated with a target", action="store_true")
-parser.add_argument('--subdomains-aggregate', help="show subdomains aggregate", action="store_true")
+parser.add_argument('--subdomains', help="show subdomains", action="store_true")
 args = parser.parse_args()
 
 if(args.apikey):
@@ -341,7 +341,7 @@ if args.target and args.param:
 	if args.domains_on_ip:
 		print(get_domains_on_ip(args.target, args.param, page, raw=args.raw))
 
-	if args.subdomains_aggregate:
+	if args.subdomains:
 		print(get_subdomains_aggregate(args.target, args.param, page, raw=args.raw))
 
 	if args.dns_all:
