@@ -14,7 +14,7 @@ print("""
 	░ ░▒  ░ ░░▒ ░     ▓██ ░▒░ ░ ░▒  ░ ░ ░ ░  ░
 	░  ░  ░  ░░       ▒ ▒ ░░  ░  ░  ░     ░   
 	      ░           ░ ░           ░     ░  ░
-	                  ░ ░                     
+	                  ░ ░           by @zer0pwn          
 """)
 
 parser = argparse.ArgumentParser(
