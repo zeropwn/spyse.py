@@ -2,7 +2,7 @@
 
 from distutils.core import setup
 
-setup(name='Spyse',
+setup(name='spyse.py',
       version='1.0',
       description='API wrapper & client for spyse.com',
       author='Dominik Penner',
