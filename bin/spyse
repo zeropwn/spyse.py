@@ -51,9 +51,9 @@ parser.add_argument('--subdomains', help="show subdomains", action="store_true")
 args = parser.parse_args()
 
 if(args.apikey):
-	s = spyse.spyse(args.apikey)
+	s = spyse(args.apikey)
 else:
-	s = spyse.spyse()
+	s = spyse()
 
 def get_dns_ptr(target, param, page, raw=False):
 	if(raw == True):
