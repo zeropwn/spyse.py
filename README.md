@@ -53,6 +53,8 @@ spyse -target google.com -param domain --dns-all
 spyse -target xbox.com -param domain -apikey <APIKEY> -page 2 --ssl-certificates --raw
 ```
 
+#### Piping to jq
+[![asciicast](https://asciinema.org/a/253602.svg)](https://asciinema.org/a/253602)
 
 ## Using the library
 
