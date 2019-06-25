@@ -2,9 +2,11 @@
 
 from spyse import spyse
 import argparse
+import json
 import sys
 
-print("""
+def banner():
+	print("""
 	  ██████  ██▓███ ▓██   ██▓  ██████ ▓█████ 
 	▒██    ▒ ▓██░  ██▒▒██  ██▒▒██    ▒ ▓█   ▀ 
 	░ ▓██▄   ▓██░ ██▓▒ ▒██ ██░░ ▓██▄   ▒███   
@@ -15,7 +17,7 @@ print("""
 	░  ░  ░  ░░       ▒ ▒ ░░  ░  ░  ░     ░   
 	      ░           ░ ░           ░     ░  ░
 	                  ░ ░           by @zer0pwn          
-""")
+	""")
 
 parser = argparse.ArgumentParser(
 	description="Client for Spyse.com",
@@ -50,6 +52,9 @@ parser.add_argument('--ssl-certificates', help="show ssl certificates associated
 parser.add_argument('--subdomains', help="show subdomains", action="store_true")
 args = parser.parse_args()
 
+if not args.raw:
+	banner()
+
 if(args.apikey):
 	s = spyse(args.apikey)
 else:
@@ -57,7 +62,7 @@ else:
 
 def get_dns_ptr(target, param, page, raw=False):
 	if(raw == True):
-		return(s.dns_ptr(target, param=param, page=page))
+		return json.dumps(s.dns_ptr(target, param=param, page=page))
 	else:
 		data = s.dns_ptr(target, param=param, page=page)
 		retval = ""
@@ -72,7 +77,7 @@ def get_dns_ptr(target, param, page, raw=False):
 
 def get_dns_soa(target, param, page, raw=False):
 	if args.raw:
-		return print(s.dns_soa(target, param=param, page=page))
+		return json.dumps(s.dns_soa(target, param=param, page=page))
 	else:
 		data = s.dns_soa(target, param=param, page=page)
 		retval = ""
@@ -87,7 +92,7 @@ def get_dns_soa(target, param, page, raw=False):
 
 def get_dns_mx(target, param, page, raw=False):
 	if args.raw:
-		return(s.dns_mx(target, param=param, page=page))
+		return json.dumps(s.dns_mx(target, param=param, page=page))
 	else:
 		data = s.dns_mx(target, param=param, page=page)
 		retval = ""
@@ -101,7 +106,7 @@ def get_dns_mx(target, param, page, raw=False):
 
 def get_dns_aaaa(target, param, page, raw=False):
 	if args.raw:
-		return s.dns_aaaa(target, param=param, page=page)
+		return json.dumps(s.dns_aaaa(target, param=param, page=page))
 	else:
 		data = s.dns_aaaa(target, param=param, page=page)
 		retval = ""
@@ -115,7 +120,7 @@ def get_dns_aaaa(target, param, page, raw=False):
 
 def get_dns_ns(target, param, page, raw=False):
 	if args.raw:
-		return s.dns_ns(target, param=param, page=page)
+		return json.dumps(s.dns_ns(target, param=param, page=page))
 	else:
 		data = s.dns_ns(target, param=param, page=page)
 		retval = ""
@@ -129,7 +134,7 @@ def get_dns_ns(target, param, page, raw=False):
 
 def get_dns_a(target, param, page, raw=False):
 	if args.raw:
-		print(s.dns_a(target, param=param, page=page))
+		return json.dumps(s.dns_a(target, param=param, page=page))
 		sys.exit()
 	else:
 		data = s.dns_a(target, param=param, page=page)
@@ -144,7 +149,7 @@ def get_dns_a(target, param, page, raw=False):
 
 def get_dns_txt(target, param, page, raw=False):
 	if args.raw:
-		return s.dns_txt(target, param=param, page=page)
+		return json.dumps(s.dns_txt(target, param=param, page=page))
 	else:
 		data = s.dns_txt(target, param=param, page=page)
 		retval = "TXT RECORDS FROM {}\n".format(target)
@@ -160,7 +165,7 @@ def get_domains_with_same_ns(target, param, page, raw=False):
 
 def get_domains_using_as_mx(target, param, page, raw=False):
 	if args.raw:
-		return s.domains_using_as_mx(target, param=param, page=page)
+		return json.dumps(s.domains_using_as_mx(target, param=param, page=page))
 	else:
 		data = s.domains_using_as_mx(target, param=param, page=page)
 		retval = ""
@@ -175,7 +180,7 @@ def get_domains_using_as_mx(target, param, page, raw=False):
 
 def get_domains_on_ip(target, param, page, raw=False):
 	if args.raw:
-		return s.domains_on_ip(target, param=param, page=page)
+		return json.dumps(s.domains_on_ip(target, param=param, page=page))
 	else:
 		retval = ""
 		data = s.domains_on_ip(target, param=param, page=page)
@@ -187,14 +192,14 @@ def get_domains_on_ip(target, param, page, raw=False):
 # spyse needs to fix this endpoint
 def get_domains_with_same_mx(target, param, page, raw=False):
 	if args.raw:
-		return s.domains_with_same_mx(target, param=param, page=page)
+		return json.dumps(s.domains_with_same_mx(target, param=param, page=page))
 	else:
 		return s.domains_with_same_mx(target, param=param, page=page)
 	return False
 
 def get_domains_using_as_ns(target, param, page, raw=False):
 	if args.raw:
-		return s.domains_using_as_ns(target, param, page)
+		return json.dumps(s.domains_using_as_ns(target, param, page))
 	else:
 		retval = ""
 		data = s.domains_using_as_ns(target, param, page)
@@ -229,7 +234,7 @@ def get_download_dns_txt(target, param, page):
 
 def get_ssl_certificates(target, param, page, raw=False):
 	if args.raw:
-		return s.ssl_certificates(target, param, page)
+		return json.dumps(s.ssl_certificates(target, param, page))
 	else:
 		try:
 			certs = s.ssl_certificates(target, param, page)
@@ -253,7 +258,7 @@ def get_ssl_certificates(target, param, page, raw=False):
 
 def get_subdomains_aggregate(target, param, page, raw=False):
 	if args.raw:
-		return s.subdomains_aggregate(target, param=param, page=page)
+		return json.dumps(s.subdomains_aggregate(target, param=param, page=page))
 	else:
 		retval = ""
 		data = s.subdomains_aggregate(target, param=param, page=page)['cidr']
@@ -272,16 +277,18 @@ def get_subdomains_aggregate(target, param, page, raw=False):
 	return False
 
 def get_dns_all(target, param, page, raw=False):
-	data = ""
 	if args.raw:
-		data += get_dns_ptr(target, param=param, page=page, raw=True)
-		data += get_dns_soa(target, param=param, page=page, raw=True)
-		data += get_dns_mx(target, param=param, page=page, raw=True)
-		data += get_dns_aaaa(target, param=param, page=page, raw=True)
-		data += get_dns_a(target, param=param, page=page, raw=True)
-		data += get_dns_ns(target, param=param, page=page, raw=True)
-		data += get_dns_txt(target, param=param, page=page, raw=True)
+		data = {}
+		data["PTR_RECORDS"] = json.loads(get_dns_ptr(target, param=param, page=page, raw=True))
+		data["SOA_RECORDS"] = json.loads(get_dns_soa(target, param=param, page=page, raw=True))
+		data["MX_RECORDS"] = json.loads(get_dns_mx(target, param=param, page=page, raw=True))
+		data["AAAA_RECORDS"] = json.loads(get_dns_aaaa(target, param=param, page=page, raw=True))
+		data["A_RECORDS"] = json.loads(get_dns_a(target, param=param, page=page, raw=True))
+		data["NS_RECORDS"] = json.loads(get_dns_ns(target, param=param, page=page, raw=True))
+		data["TXT_RECORDS"] = json.loads(get_dns_txt(target, param=param, page=page, raw=True))
+		return json.dumps(data)
 	else:
+		data = ""
 		data += get_dns_ptr(target, param=param, page=page)
 		data += get_dns_soa(target, param=param, page=page)
 		data += get_dns_mx(target, param=param, page=page)
