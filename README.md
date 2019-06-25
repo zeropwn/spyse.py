@@ -22,10 +22,9 @@ Supports the following APIs:
 #### NOTE: This API is currently under active development.
 
 ## Installation
+
 ```bash
-git clone https://github.com/zeropwn/spyse.py
-cd spyse.py
-pip3 install .
+pip3 install spyse.py
 ```
 
 ## Using the client
