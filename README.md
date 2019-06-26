@@ -62,7 +62,7 @@ API_TARGET_PARAMS = [
 ```bash
 spyse -target xbox.com -param domain --subdomains
 spyse -target 127.0.0.1/24 -param cidr --domains-on-ip
-spyse -target hotmail.com -param url --ssl-certificates
+spyse -target hotmail.com -param domain --ssl-certificates
 spyse -target google.com -param domain --dns-all
 spyse -target xbox.com -param domain -apikey <APIKEY> -page 2 --ssl-certificates --raw
 ```
