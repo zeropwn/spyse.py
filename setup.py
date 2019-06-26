@@ -7,7 +7,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='spyse.py',
-      version='0.13.1',
+      version='0.13.2',
       description='API wrapper & client for spyse.com',
       long_description=long_description,
       long_description_content_type='text/markdown',
