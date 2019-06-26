@@ -42,6 +42,20 @@ pip3 install spyse.py
 
 Spyse allows you to search their database for IPs, IP ranges, domain names, URLs, etc. The parameter argument is meant to specify the type of your input.
 
+#### List of parameters
+
+```python3
+API_TARGET_PARAMS = [
+	'cidr',
+	'domain',
+	'ip',
+	'page',
+	'url',
+	'hash',
+	'q'
+]
+```
+
 
 #### Example usages
 
