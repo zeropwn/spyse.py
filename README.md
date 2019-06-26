@@ -2,7 +2,7 @@
 ![Build Status](https://travis-ci.org/zeropwn/spyse.py.svg?branch=master)
 [![Python 3.6](https://img.shields.io/badge/Python-3.6-blue.svg)](https://www.python.org/download/releases/3.0/)
 [![GitHub license](https://img.shields.io/github/license/zeropwn/spyse.py.svg)](https://github.com/zeropwn/spyse.py/blob/master/LICENSE)
-![](https://i.imgur.com/fX2NncJ.jpg)
+![](https://i.imgur.com/vpgzWEi.png)
 
 Python API wrapper for the tools hosted on spyse.com.
 
