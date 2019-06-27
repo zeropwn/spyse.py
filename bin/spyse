@@ -48,6 +48,8 @@ parser.add_argument('--download-dns-mx', help="download dns mx records", action=
 parser.add_argument('--download-dns-a', help="download dns a records", action="store_true")
 parser.add_argument('--download-dns-txt', help="download dns txt records", action="store_true")
 parser.add_argument('--download-dns-all', help="download all dns records", action="store_true")
+parser.add_argument('--ip-port-lookup', help="show ip port lookup", action="store_true")
+parser.add_argument('--ip-port-lookup-aggregate', help="show ip port lookup aggregate", action="store_true")
 parser.add_argument('--ssl-certificates', help="show ssl certificates associated with a target", action="store_true")
 parser.add_argument('--subdomains', help="show subdomains", action="store_true")
 args = parser.parse_args()
@@ -308,6 +310,51 @@ def get_download_dns_all(target, param, page):
 	data += get_download_dns_txt(target, param, page) + "\n"
 	return data
 
+def get_ip_port_lookup(target, param, page):
+	if args.raw:
+		return json.dumps(s.ip_port_lookup(target, param=param, page=page))
+	else:
+		data = s.ip_port_lookup(target, param=param, page=page)
+		retval = ""
+		for record in data:
+			ip = record['ip']['ip']
+			ports = []
+			for i in record['iplList']:
+				ports.append(i['port'])
+				retval += "ip: '{}' port: '{}'\n".format(ip, i['port'])
+		return retval
+	return False
+
+def get_ip_port_lookup_aggregate(target, param, page):
+	if args.raw:
+		return json.dumps(s.ip_port_lookup_aggregate(target, param=param, page=page))
+	else:
+		data = s.ip_port_lookup_aggregate(target, param=param, page=page)
+		retval = ""
+		if 'cidr' in data['blocks']:
+			cidr = data['blocks']['cidr']['results']
+			for i in cidr:
+				retval += "Found {} open port(s) regarding {}\n".format(i['count'], i['q'])
+		if 'as' in data['blocks']:
+			aas = data['blocks']['as']['results']
+			for i in aas:
+				retval += "Found {} open port(s) regarding {}\n".format(i['count'], i['q'])
+		if 'service' in data['blocks']:
+			service = data['blocks']['service']['results']
+			for i in service:
+				retval += "Found {} open port(s) regarding {}\n".format(i['count'], i['q'])
+		if 'protocol' in data['blocks']:
+			protocol = data['blocks']['protocol']['results']
+			for i in protocol:
+				retval += "Found {} open port(s) regarding {}\n".format(i['count'], i['q'])
+		if 'ports' in data['blocks']:
+			ports = data['blocks']['port']['results']
+			for i in ports:
+				retval += "Found {} open port(s) regarding {}\n".format(i['count'], i['q'])
+		return retval
+	return False
+
+
 
 if args.target and args.param:
 	if args.page:
@@ -383,3 +430,9 @@ if args.target and args.param:
 
 	if args.ssl_certificates:
 		print(get_ssl_certificates(args.target, args.param, page))
+
+	if args.ip_port_lookup:
+		print(get_ip_port_lookup(args.target, args.param, page))
+
+	if args.ip_port_lookup_aggregate:
+		print(get_ip_port_lookup_aggregate(args.target, args.param, page))
