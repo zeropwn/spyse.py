@@ -36,7 +36,7 @@ pip3 install spyse.py
 
 ## Updating
 ```bash
-pip3 install spyse.py --upgrade
+pip3 install --no-cache-dir spyse.py
 ```
 
 ## Using the client
