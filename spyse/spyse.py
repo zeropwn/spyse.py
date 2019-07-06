@@ -50,6 +50,7 @@ class spyse:
 	API_TARGET_PARAMS = [
 		'cidr',
 		'domain',
+		'sdword',
 		'ip',
 		'page',
 		'url',
@@ -202,7 +203,7 @@ class spyse:
 	# Provides information about domains on same IP/CIDR. If domain is provided,
 	# method will return domains that have matching IPs. If two or more parameters
 	# are provided, method will return domains satisfying each of the conditions.
-	def domains_on_ip(self, target, param='domain', page=1):
+	def domains_on_ip(self, target, param='ip', page=1):
 		if param not in self.API_TARGET_PARAMS:
 			return "Invalid parameter."
 		r = requests.get("{}/{}?api_token={}&{}={}&page={}".format(
@@ -356,7 +357,7 @@ class spyse:
 		return r.text
 
 	# Downloading domains on same IP in .txt or .tsv format.
-	def download_domains_on_ip(self, target, param='domain', page=1):
+	def download_domains_on_ip(self, target, param='ip', page=1):
 		if param not in self.API_TARGET_PARAMS:
 			return "Invalid parameter."
 		r = requests.get("{}/{}?api_token={}&{}={}&page={}".format(
@@ -440,7 +441,7 @@ class spyse:
 		return r.json()
 
 	# Provides list of SSL certificates.
-	def ssl_certificates(self, target, param='url', page=1):
+	def ssl_certificates(self, target, param='domain', page=1):
 		if param not in self.API_TARGET_PARAMS:
 			return "Invalid parameter."
 		if param == 'domain':
@@ -456,7 +457,7 @@ class spyse:
 		return r.json()
 
 	# Returns raw ssl certificate.
-	def ssl_certificate_raw(self, target, param='url', page=1):
+	def ssl_certificate_raw(self, target, param='domain', page=1):
 		if param not in self.API_TARGET_PARAMS:
 			return "Invalid parameter."
 		if param == 'domain':
@@ -560,7 +561,7 @@ class spyse:
 		return r.json()
 
 	# Returns a list of domains that starts with provided sdword.
-	def domains_starts_with(self, target, param='domain', page=1):
+	def domains_starts_with(self, target, param='sdword', page=1):
 		if param not in self.API_TARGET_PARAMS:
 			return "Invalid parameter."
 		r = requests.get("{}/{}?api_token={}&{}={}&page={}".format(
@@ -577,7 +578,7 @@ class spyse:
 	# with provided sdword, list of IPs of subdomains and subdomain count on every IP,
 	# list of AS numbers and subdomain count on every AS number, list of countries and
 	# subdomain count from it, list of CIDRs /24, /16 and subdomain list on every CIDR.
-	def domains_starts_with_aggregate(self, target, param='domain', page=1):
+	def domains_starts_with_aggregate(self, target, param='sdword', page=1):
 		if param not in self.API_TARGET_PARAMS:
 			return "Invalid parameter."
 		r = requests.get("{}/{}?api_token={}&{}={}&page={}".format(

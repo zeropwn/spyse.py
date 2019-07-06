@@ -1,8 +1,10 @@
+
+
 # spyse.py
 ![Build Status](https://travis-ci.org/zeropwn/spyse.py.svg?branch=master)
 [![Python 3.6](https://img.shields.io/badge/Python-3.6-blue.svg)](https://www.python.org/download/releases/3.0/)
 [![GitHub license](https://img.shields.io/github/license/zeropwn/spyse.py.svg)](https://github.com/zeropwn/spyse.py/blob/master/LICENSE)
-![](https://i.imgur.com/vpgzWEi.png)
+![](https://i.imgur.com/0zQ8OCP.png)
 
 Python API wrapper and command-line client for the tools hosted on spyse.com.
 
@@ -19,6 +21,12 @@ Supports the following APIs:
 
 
 #### NOTE: This API is currently under active development.
+## What's New
+#### July 6th 2019
+- Query searches.
+- Parameter detection.
+- Support for the ```domains_starts_with*``` options (library only)
+- Default parameters.
 
 ## Installation
 
@@ -26,20 +34,43 @@ Supports the following APIs:
 pip3 install spyse.py
 ```
 
+## Updating
+```bash
+pip3 install spyse.py --upgrade
+```
+
 ## Using the client
 
 #### Required Arguments
 * ```-target```
-* ```-param```
 
 #### Optional Arguments
+* ```-param```
 * ```-page```
 * ```-apikey```
 * ```--raw```
 
 #### What is the param argument?
 
-Spyse allows you to search their database for IPs, IP ranges, domain names, URLs, etc. The parameter argument is meant to specify the type of your input.
+Spyse allows you to search their database for IPs, IP ranges, domain names, URLs, etc. The parameter argument is meant to specify the type of your input. 
+
+As of July 6th 2019, most of the functions do not require you to set a parameter unless you'd like to override the default one.
+
+For example, the default parameter for ```--domains-on-ip``` is ```ip```, however you can override this parameter and search by CIDR, or organization instead. You should only need to do this if you're getting an error message, as parameter detection has also been added.
+
+The detection is quite simple:
+
+```python
+# detect whether input is cidr or ip or search query (q)
+if "/" in args.target:
+  param = "cidr"
+elif ":" in args.target:
+  param = "q"
+else:
+  param = "ip"
+```
+
+The detection varies from function to function, as certain functions require different default parameters.
 
 #### List of parameters
 * ```cidr```
@@ -51,43 +82,48 @@ Spyse allows you to search their database for IPs, IP ranges, domain names, URLs
 * ```q```
 
 #### Using search queries
-Much like Shodan, Spyse allows you to use search queries. To do this, you must supply the "q" parameter. From there, it's as simple as supplying "org: Microsoft" as the target.
+Much like Shodan, Spyse allows you to use search queries.
 ```bash
-spyse -target "org: Microsoft" -param q --ssl-certificates
+spyse -target "org: Microsoft" --ssl-certificates
 ```
 
 #### Searching for subdomains
 ```bash
-spyse -target xbox.com -param domain --subdomains
+spyse -target xbox.com --subdomains
 ```
 
 #### Reverse IP Lookup
 ```bash
-spyse -target 52.14.144.171 -param ip --domains-on-ip
+spyse -target 52.14.144.171 --domains-on-ip
 ```
 
 #### Searching for SSL certificates
 ```bash
-spyse -target hotmail.com -param domain --ssl-certificates
+spyse -target hotmail.com --ssl-certificates
 ```
 ```bash
-spyse -target "org: Microsoft" -param q --ssl-certificates
+spyse -target "org: Microsoft" --ssl-certificates
 ```
 #### Getting all DNS records
 ```bash
-spyse -target xbox.com -param domain --dns-all
+spyse -target xbox.com --dns-all
+```
+
+### Manually overriding the parameter argument
+```
+spyse -target hackerone.com -param domain --subdomains
 ```
 
 #### Navigating multiple pages using your API key
 ```bash
 export SPYSEKEY="yourkeyhere"
-spyse -target xbox.com -param domain -apikey $SPYSEKEY -page 2 ---ssl-certificates
+spyse -target xbox.com -apikey $SPYSEKEY -page 2 ---ssl-certificates
 ```
 #### Piping to jq and aquatone
 Initially when I decided to write this client I really wanted it to focus on flexibility within the command-line, which is why there is the ```--raw``` option. From there you can work with the raw JSON returned by the API.
 
 ```bash
-spyse -target hackerone.com -param domain --dns-soa --raw | jq
+spyse -target hackerone.com --dns-soa --raw | jq
 ```
 
 [![asciicast](https://asciinema.org/a/253602.svg)](https://asciinema.org/a/253602)
@@ -149,7 +185,7 @@ optional arguments:
   --ssl-certificates    show ssl certificates associated with a target
   --subdomains          show subdomains
 
-Usage: spyse -target <TARGET> -param <PARAM> --subdomains
+Usage: spyse -target hackerone.com --subdomains
 ```
 
 ## Using the library
@@ -202,43 +238,43 @@ print(results)
 All of the methods listed on https://api-doc.spyse.com/
 
 ```python
-	API_METHODS = {
-		"DNS_PTR": "/dns-ptr",
-		"DNS_SOA": "/dns-soa",
-		"DNS_MX": "/dns-mx",
-		"DNS_AAAA": "/dns-aaaa",
-		"DNS_NS": "/dns-ns",
-		"DNS_A": "/dns-a",
-		"DNS_TXT": "/dns-txt",
-		"domains_with_same_ns": "/domains-with-same-ns",
-		"domains_using_as_mx": "/domains-using-as-mx",
-		"domains_on_ip": "/domains-on-ip",
-		"domains_with_same_mx": "/domains-with-same-mx",
-		"domains_using_as_ns": "/domains-using-as-ns",
-		"download_dns_aaaa": "/download-dns-aaaa",
-		"download_dns_soa": "/download-dns-soa",
-		"download_dns_ns": "/download-dns-ns",
-		"download_dns_ptr": "/download-ns-ptr",
-		"download_dns_mx": "/download-dns-mx",
-		"download_dns_a": "/download-dns-a",
-		"download_dns_txt": "/download-dns-txt",
-		"download_domains_with_same_mx": "/download-domains-with-same-mx",
-		"download_domains_on_ip": "/download-domains-on-ip",
-		"download_domains_with_same_ns": "/download-domains-with-same-ns",
-		"download_domains_using_as_ns": "/download-domains-using-as-ns",
-		"download_domains_using_as_mx": "/download-domains-using-as-mx",
-		"ip_port_lookup_aggregate": "/ip-port-lookup-aggregate",
-		"ip_port_lookup": "/ip-port-lookup",
-		"ssl_certificates": "/ssl-certificates",
-		"ssl_certificate_raw": "/ssl-certificate-raw",
-		"ssl_certificates_aggregate": "ssl-certificates-aggregate",
-		"ssl_certificate": "/ssl-certificate",
-		"ssl_certificate_public_key": "/ssl-certificate-public-key",
-		"ssl_certificate_json": "/ssl-certificate-json",
-		"subdomains": "/subdomains",
-		"subdomains_aggregate": "/subdomains-aggregate",
-		"domains_starts_with": "/domains-starts-with",
-		"domains_starts_with_aggregate": "/domains-starts-with-aggregate"
-	}
+  API_METHODS = {
+    "DNS_PTR": "/dns-ptr",
+    "DNS_SOA": "/dns-soa",
+    "DNS_MX": "/dns-mx",
+    "DNS_AAAA": "/dns-aaaa",
+    "DNS_NS": "/dns-ns",
+    "DNS_A": "/dns-a",
+    "DNS_TXT": "/dns-txt",
+    "domains_with_same_ns": "/domains-with-same-ns",
+    "domains_using_as_mx": "/domains-using-as-mx",
+    "domains_on_ip": "/domains-on-ip",
+    "domains_with_same_mx": "/domains-with-same-mx",
+    "domains_using_as_ns": "/domains-using-as-ns",
+    "download_dns_aaaa": "/download-dns-aaaa",
+    "download_dns_soa": "/download-dns-soa",
+    "download_dns_ns": "/download-dns-ns",
+    "download_dns_ptr": "/download-ns-ptr",
+    "download_dns_mx": "/download-dns-mx",
+    "download_dns_a": "/download-dns-a",
+    "download_dns_txt": "/download-dns-txt",
+    "download_domains_with_same_mx": "/download-domains-with-same-mx",
+    "download_domains_on_ip": "/download-domains-on-ip",
+    "download_domains_with_same_ns": "/download-domains-with-same-ns",
+    "download_domains_using_as_ns": "/download-domains-using-as-ns",
+    "download_domains_using_as_mx": "/download-domains-using-as-mx",
+    "ip_port_lookup_aggregate": "/ip-port-lookup-aggregate",
+    "ip_port_lookup": "/ip-port-lookup",
+    "ssl_certificates": "/ssl-certificates",
+    "ssl_certificate_raw": "/ssl-certificate-raw",
+    "ssl_certificates_aggregate": "ssl-certificates-aggregate",
+    "ssl_certificate": "/ssl-certificate",
+    "ssl_certificate_public_key": "/ssl-certificate-public-key",
+    "ssl_certificate_json": "/ssl-certificate-json",
+    "subdomains": "/subdomains",
+    "subdomains_aggregate": "/subdomains-aggregate",
+    "domains_starts_with": "/domains-starts-with",
+    "domains_starts_with_aggregate": "/domains-starts-with-aggregate"
+  }
   ```
 

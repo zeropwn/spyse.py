@@ -21,7 +21,7 @@ def banner():
 
 parser = argparse.ArgumentParser(
 	description="Client for Spyse.com",
-	epilog="Usage: spyse -target <TARGET> -param <PARAM> --subdomains")
+	epilog="Usage: spyse -target hackerone.com --subdomains")
 parser.add_argument('-target', help="target")
 parser.add_argument('-param', help="parameter to use (ip, domain, cidr, url, hash)")
 parser.add_argument('-page', help="page")
@@ -356,83 +356,113 @@ def get_ip_port_lookup_aggregate(target, param, page):
 
 
 
-if args.target and args.param:
+if args.target:
 	if args.page:
 		page = args.page
 	else:
 		page = 1
 
 	target = args.target
-	param = args.param
+
+	if args.param:
+		param = args.param
+	else:
+		param = "domain"
 
 	if args.dns_ptr:
-		print(get_dns_ptr(args.target, args.param, page, raw=args.raw))
+		print(get_dns_ptr(args.target, param, page, raw=args.raw))
 
 	if args.dns_soa:
-		print(get_dns_soa(args.target, args.param, page, raw=args.raw))
+		print(get_dns_soa(args.target, param, page, raw=args.raw))
 
 	if args.dns_mx:
-		print(get_dns_mx(args.target, args.param, page, raw=args.raw))
+		print(get_dns_mx(args.target, param, page, raw=args.raw))
 
 	if args.dns_aaaa:
-		print(get_dns_aaaa(args.target, args.param, page, raw=args.raw))
+		print(get_dns_aaaa(args.target, param, page, raw=args.raw))
 
 	if args.dns_ns:
-		print(get_dns_ns(args.target, args.param, page, raw=args.raw))
+		print(get_dns_ns(args.target, param, page, raw=args.raw))
 
 	if args.dns_a:
-		print(get_dns_a(args.target, args.param, page, raw=args.raw))
+		print(get_dns_a(args.target, param, page, raw=args.raw))
 
 	if args.dns_txt:
-		print(get_dns_txt(args.target, args.param, page, raw=args.raw))
+		print(get_dns_txt(args.target, param, page, raw=args.raw))
 
 	if args.domains_with_same_ns:
-		print(get_domains_with_same_ns(args.target, args.param, page, raw=args.raw))
+		print(get_domains_with_same_ns(args.target, param, page, raw=args.raw))
 
 	if args.domains_using_as_mx:
-		print(get_domains_using_as_mx(args.target, args.param, page, raw=args.raw))
+		print(get_domains_using_as_mx(args.target, param, page, raw=args.raw))
 
 	if args.domains_on_ip:
-		print(get_domains_on_ip(args.target, args.param, page, raw=args.raw))
+		# detect whether input is cidr or ip or q
+		if "/" in args.target:
+			param = "cidr"
+		elif ":" in args.target:
+			param = "q"
+		else:
+			param = "ip"
+		print(get_domains_on_ip(args.target, param, page, raw=args.raw))
 
 	if args.subdomains:
-		print(get_subdomains_aggregate(args.target, args.param, page, raw=args.raw))
+		print(get_subdomains_aggregate(args.target, param, page, raw=args.raw))
 
 	if args.dns_all:
-		print(get_dns_all(args.target, args.param, page))
+		print(get_dns_all(args.target, param, page))
 
 	if args.domains_using_as_ns:
-		print(get_domains_using_as_ns(args.target, args.param, page))
+		print(get_domains_using_as_ns(args.target, param, page))
 
 	if args.download_dns_aaaa:
-		print(get_download_dns_aaaa(args.target, args.param, page))
+		print(get_download_dns_aaaa(args.target, param, page))
 
 	if args.download_dns_soa:
-		print(get_download_dns_soa(args.target, args.param, page))
+		print(get_download_dns_soa(args.target, param, page))
 
 	if args.download_dns_ns:
-		print(get_download_dns_ns(args.target, args.param, page))
+		print(get_download_dns_ns(args.target, param, page))
 
 	if args.download_dns_ptr:
-		print(get_download_dns_ptr(args.target, args.param, page))
+		print(get_download_dns_ptr(args.target, param, page))
 
 	if args.download_dns_mx:
-		print(get_download_dns_mx(args.target, args.param, page))
+		print(get_download_dns_mx(args.target, param, page))
 
 	if args.download_dns_a:
-		print(get_download_dns_a(args.target, args.param, page))
+		print(get_download_dns_a(args.target, param, page))
 	
 	if args.download_dns_txt:
-		print(get_download_dns_txt(args.target, args.param, page))
+		print(get_download_dns_txt(args.target, param, page))
 
 	if args.download_dns_all:
-		print(get_download_dns_all(args.target, args.param, page))
+		print(get_download_dns_all(args.target, param, page))
 
 	if args.ssl_certificates:
-		print(get_ssl_certificates(args.target, args.param, page))
+		# detect whether input is cidr or ip or q
+		if "/" in args.target:
+			param = "cidr"
+		elif ":" in args.target:
+			param = "q"
+		print(get_ssl_certificates(args.target, param, page))
 
 	if args.ip_port_lookup:
-		print(get_ip_port_lookup(args.target, args.param, page))
+		# detect whether input is cidr or ip or q
+		if "/" in args.target:
+			param = "cidr"
+		elif ":" in args.target:
+			param = "q"
+		else:
+			param = "ip"
+		print(get_ip_port_lookup(args.target, param, page))
 
 	if args.ip_port_lookup_aggregate:
-		print(get_ip_port_lookup_aggregate(args.target, args.param, page))
+		# detect whether input is cidr or ip or q
+		if "/" in args.target:
+			param = "cidr"
+		elif ":" in args.target:
+			param = "q"
+		else:
+			param = "ip"
+		print(get_ip_port_lookup_aggregate(args.target, param, page))
